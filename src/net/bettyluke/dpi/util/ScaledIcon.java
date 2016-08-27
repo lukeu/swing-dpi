@@ -26,14 +26,20 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.lang.ref.SoftReference;
 
+import javax.swing.AbstractButton;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.UIManager;
 
 public class ScaledIcon implements Icon {
     protected final Icon delegate;
     protected final float scaleFactor;
     private final AffineTransformOp scaleOperation;
+    private SoftReference<ImageIcon> enabledIcon = new SoftReference<ImageIcon>(null);
+    private SoftReference<ImageIcon> disabledIcon = new SoftReference<ImageIcon>(null);
 
     public ScaledIcon(Icon icon, float scaleFactor) {
 
@@ -60,7 +66,28 @@ public class ScaledIcon implements Icon {
             return;
         }
 
-        new ImageIcon(paintToImageThenScale(c)).paintIcon(c, g, x, y);
+        boolean renderEnabled = !(c instanceof AbstractButton) || c.isEnabled();
+        ImageIcon icon = renderEnabled ? enabledIcon.get() : disabledIcon.get();
+        if (icon == null) {
+            icon = new ImageIcon(paintToImageThenScale(c));
+            if (delegate instanceof ImageIcon) {
+                if (renderEnabled) {
+                    enabledIcon = new SoftReference<ImageIcon>(icon);
+                } else {
+
+                    // Note that LookAndFeel#getDisabledIcon only operates upon ImageIcon (despite
+                    // having a parameter that takes any Icon). Therefore if 'delegate' is an
+                    // ImageIcon we need to render it disabled ourselves, since this class does
+                    // not extend ImageIcon.
+                    if (c instanceof JComponent) {
+                        icon = (ImageIcon) UIManager.getLookAndFeel().getDisabledIcon(
+                                (JComponent) c, icon);
+                    }
+                    disabledIcon = new SoftReference<ImageIcon>(icon);
+                }
+            }
+        }
+        icon.paintIcon(c, g, x, y);
     }
 
     /**
