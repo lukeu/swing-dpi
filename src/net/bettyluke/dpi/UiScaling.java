@@ -103,7 +103,7 @@ public class UiScaling {
     }
 
     public static int scale(int i) {
-        return (i * s_scalingPercentage) / 100;
+        return Math.round((i * s_scalingPercentage) / 100f);
     }
 
     public static Dimension scale(Dimension dim) {

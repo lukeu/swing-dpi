@@ -101,8 +101,8 @@ public class BasicTweaker implements Tweaker {
         if (scaleFactor == 1f || !(original instanceof DimensionUIResource)) {
             return original;
         }
-        int width = (int) (original.width * scaleFactor);
-        int height = (int) (original.height * scaleFactor);
+        int width = Math.round(original.width * scaleFactor);
+        int height = Math.round(original.height * scaleFactor);
         return new DimensionUIResource(width, height);
     }
 
@@ -115,7 +115,7 @@ public class BasicTweaker implements Tweaker {
         if (scale == 1f || !endsWithOneOf(lower(key), getLowerSuffixesForScaledIntegers())) {
             return original;
         }
-        return (int) (original * scale);
+        return Math.round(original * scale);
     }
 
     private static boolean endsWithOneOf(String text, String[] suffixes) {
