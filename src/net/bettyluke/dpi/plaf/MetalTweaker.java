@@ -20,21 +20,9 @@
 
 package net.bettyluke.dpi.plaf;
 
-import java.awt.Font;
-
-import javax.swing.plaf.FontUIResource;
-
 public class MetalTweaker extends BasicTweaker {
 
     public MetalTweaker(float scaleFactor) {
         super(scaleFactor);
-    }
-
-    @Override
-    public Font modifyFont(Object key, Font font) {
-        if (doExtraTweaks && font instanceof FontUIResource && font.getStyle() == Font.BOLD) {
-            return newScaledFontUIResource(font.deriveFont(Font.PLAIN), scaleFactor);
-        }
-        return super.modifyFont(key, font);
     }
 }
