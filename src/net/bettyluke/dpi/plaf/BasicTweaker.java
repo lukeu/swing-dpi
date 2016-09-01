@@ -59,6 +59,12 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public void initialTweaks() {
+        if (doExtraTweaks) {
+
+            // Increase the pre-scaled row height from 16 -> 19, as suggested in BasicTreeUI.java
+            // It still won't update with font changes (but it will be changed with scaling)
+            uiDefaults.put("Tree.rowHeight", 19);
+        }
     }
 
     public void setDoExtraTweaks(boolean flag) {
