@@ -106,6 +106,10 @@ public class UiScaling {
         return Math.round((i * s_scalingPercentage) / 100f);
     }
 
+    public static float scale(float f) {
+        return f * s_scalingPercentage / 100f;
+    }
+
     public static Dimension scale(Dimension dim) {
         return (s_scalingPercentage == 100) ? dim :
                 new Dimension(scale(dim.width), scale(dim.height));
