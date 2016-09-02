@@ -55,23 +55,27 @@ public class UiDefaultsScaler {
         this.delegate = delegate;
     }
 
-    public static void updateAndApplyGlobalScaling(int scalingInPercent) {
+    public static void updateAndApplyGlobalScaling(int scalingInPercent, boolean alsoTweak) {
         float scaleFactor = scalingInPercent / 100f;
-        UiDefaultsScaler scaler = new UiDefaultsScaler(createTweakerForCurrentLook(scaleFactor));
-        scaler.applyScalingAndTweaks(scaleFactor);
+
+        BasicTweaker tweaker = createTweakerForCurrentLook(scaleFactor);
+        tweaker.setDoExtraTweaks(alsoTweak);
+
+        UiDefaultsScaler scaler = new UiDefaultsScaler(tweaker);
+        scaler.applyScalingAndTweaks();
 
         // Updates the global constant, which can be used for apply scaling to UI elements not
         // covered by the UIDefaults. This also fires a notification event to anyone interested.
         UiScaling.setScaling(scalingInPercent);
     }
 
-    private void applyScalingAndTweaks(float scaleFactor) {
+    private void applyScalingAndTweaks() {
         delegate.initialTweaks();
-        modifyDefaults(delegate, scaleFactor);
+        modifyDefaults(delegate);
         delegate.finalTweaks();
     }
 
-    private static Tweaker createTweakerForCurrentLook(float dpiScaling) {
+    private static BasicTweaker createTweakerForCurrentLook(float dpiScaling) {
         String testString = UIManager.getLookAndFeel().getName().toLowerCase();
         if (testString.contains("windows")) {
             return new WindowsTweaker(dpiScaling);
@@ -85,7 +89,7 @@ public class UiDefaultsScaler {
         return new BasicTweaker(dpiScaling);
     }
 
-    private void modifyDefaults(Tweaker delegate, float multiplier) {
+    private void modifyDefaults(Tweaker delegate) {
         UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 
         // Used to replicate aliased-references to the same object wherever the original did this.
