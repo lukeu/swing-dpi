@@ -24,6 +24,7 @@ import java.awt.Font;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 import javax.swing.plaf.IconUIResource;
 
 import net.bettyluke.dpi.DpiUtils;
@@ -37,6 +38,8 @@ public class WindowsTweaker extends BasicTweaker {
      * scale-factor. This value holds the resulting scale-factor to apply to these UI elements.
      */
     protected final float alternateScaleFactor;
+
+    protected final Font optionPaneFont;
 
     /**
      * UI Defaults starting with these keys are handled by the WindowsIconFactory. The do an
@@ -68,6 +71,13 @@ public class WindowsTweaker extends BasicTweaker {
         // (the same things which hopefully the heuristics in BasicTweaker manages to locate).
         super(scaleFactor);
         alternateScaleFactor = 100f * scaleFactor / DpiUtils.getCurrentScaling();
+
+        optionPaneFont = UIManager.getFont("OptionPane.font");
+    }
+
+    @Override
+    public void initialTweaks() {
+        super.initialTweaks();
     }
 
     @Override
@@ -77,14 +87,22 @@ public class WindowsTweaker extends BasicTweaker {
 
     @Override
     public Font modifyFont(Object key, Font original) {
+        Font font = maybeSubstituteFont(original);
         String keyString = key.toString();
         if (keyString.endsWith(".acceleratorFont") && !keyString.startsWith("MenuItem.") ||
                 keyString.equals("ColorChooser.font") ||
                 keyString.equals("TextArea.font")) {
-            return super.modifyFont(key, original);
+            return super.modifyFont(key, font);
         }
-        return (alternateScaleFactor == 1f) ? original :
-                newScaledFontUIResource(original, alternateScaleFactor);
+        return (alternateScaleFactor == 1f) ? font :
+                newScaledFontUIResource(font, alternateScaleFactor);
+    }
+
+    private Font maybeSubstituteFont(Font original) {
+        if (doExtraTweaks && "Tahoma".equals(original.getFamily())) {
+            return optionPaneFont;
+        }
+        return original;
     }
 
     @Override
