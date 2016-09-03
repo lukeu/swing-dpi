@@ -87,8 +87,8 @@ public class WindowsTweaker extends BasicTweaker {
 
     @Override
     public Font modifyFont(Object key, Font original) {
-        Font font = maybeSubstituteFont(original);
         String keyString = key.toString();
+        Font font = maybeSubstituteFont(keyString, original);
         if (keyString.endsWith(".acceleratorFont") && !keyString.startsWith("MenuItem.") ||
                 keyString.equals("ColorChooser.font") ||
                 keyString.equals("TextArea.font")) {
@@ -98,8 +98,8 @@ public class WindowsTweaker extends BasicTweaker {
                 newScaledFontUIResource(font, alternateScaleFactor);
     }
 
-    private Font maybeSubstituteFont(Font original) {
-        if (doExtraTweaks && "Tahoma".equals(original.getFamily())) {
+    private Font maybeSubstituteFont(String key, Font original) {
+        if (doExtraTweaks && "Tahoma".equals(original.getFamily()) && !key.equals("Panel.font")) {
             return optionPaneFont;
         }
         return original;
