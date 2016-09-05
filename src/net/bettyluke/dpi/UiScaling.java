@@ -21,6 +21,7 @@
 package net.bettyluke.dpi;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,5 +114,9 @@ public class UiScaling {
     public static Dimension scale(Dimension dim) {
         return (s_scalingPercentage == 100) ? dim :
                 new Dimension(scale(dim.width), scale(dim.height));
+    }
+
+    public static Font scale(Font font) {
+        return font.deriveFont(font.getSize2D() * s_scalingPercentage / 100f);
     }
 }
