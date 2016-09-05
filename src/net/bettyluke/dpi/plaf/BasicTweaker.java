@@ -143,5 +143,8 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public void finalTweaks() {
+        if (doExtraTweaks) {
+            uiDefaults.put("Tree.paintLines", false);
+        }
     }
 }
