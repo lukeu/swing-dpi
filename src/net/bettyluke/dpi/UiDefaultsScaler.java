@@ -78,7 +78,7 @@ public class UiDefaultsScaler {
     private static BasicTweaker createTweakerForCurrentLook(float dpiScaling) {
         String testString = UIManager.getLookAndFeel().getName().toLowerCase();
         if (testString.contains("windows")) {
-            return new WindowsTweaker(dpiScaling);
+            return new WindowsTweaker(dpiScaling, testString.contains("classic"));
         }
         if (testString.contains("metal")) {
             return new MetalTweaker(dpiScaling);

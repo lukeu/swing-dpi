@@ -62,6 +62,7 @@ public class BasicTweaker implements Tweaker {
         if (doExtraTweaks) {
 
             // Increase the pre-scaled row height from 16 -> 19, as suggested in BasicTreeUI.java
+            // (16 is Windows 95! Mac, Linux and even Windows XP used more spacing than that.)
             // It still won't update with font changes (but it will be changed with scaling)
             uiDefaults.put("Tree.rowHeight", 19);
         }

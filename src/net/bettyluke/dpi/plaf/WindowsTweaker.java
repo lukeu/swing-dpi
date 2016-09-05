@@ -41,6 +41,8 @@ public class WindowsTweaker extends BasicTweaker {
 
     protected final Font optionPaneFont;
 
+    protected final boolean windowsClassic;
+
     /**
      * UI Defaults starting with these keys are handled by the WindowsIconFactory. The do an
      * instanceof check against some specific private inner classes (such as VistaMenuItemCheckIcon)
@@ -65,14 +67,14 @@ public class WindowsTweaker extends BasicTweaker {
             "CheckBoxMenuItem.", "RadioButtonMenuItem."
     };
 
-    public WindowsTweaker(float scaleFactor) {
+    public WindowsTweaker(float scaleFactor, boolean classic) {
 
         // Windows already scales fonts, scrollbar sizes (etc) according to the system DPI settings.
         // (the same things which hopefully the heuristics in BasicTweaker manages to locate).
         super(scaleFactor);
         alternateScaleFactor = 100f * scaleFactor / DpiUtils.getCurrentScaling();
-
         optionPaneFont = UIManager.getFont("OptionPane.font");
+        windowsClassic = classic;
     }
 
     @Override
@@ -99,7 +101,7 @@ public class WindowsTweaker extends BasicTweaker {
     }
 
     private Font maybeSubstituteFont(String key, Font original) {
-        if (doExtraTweaks && "Tahoma".equals(original.getFamily()) && !key.equals("Panel.font")) {
+        if (makeModern() && "Tahoma".equals(original.getFamily()) && !key.equals("Panel.font")) {
             return optionPaneFont;
         }
         return original;
@@ -150,6 +152,14 @@ public class WindowsTweaker extends BasicTweaker {
         //
         // Examples: RadioButtonMenuItem.arrowIcon, Table.ascendingSortIcon, Tree.expandedIcon
         return newScaledIconUIResource(original, alternateScaleFactor);
+    }
+
+    /**
+     * Stick with Java's Windows 95/XP styling if 'classic' Windows is specified or if tweaking
+     * UI has been globally disabled. Otherwise try and catch up a bit with the current decade.
+     */
+    private boolean makeModern() {
+        return doExtraTweaks && !windowsClassic;
     }
 
     protected static Icon newLoopBreakingScaledIcon(Object key, Icon original, float scale) {
