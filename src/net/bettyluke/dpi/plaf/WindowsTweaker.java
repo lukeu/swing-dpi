@@ -138,10 +138,23 @@ public class WindowsTweaker extends BasicTweaker {
         //
         // Examples: CheckBox.icon, Menu.arrowIcon, RadioButtonMenuItem.checkIcon
         //
-        if (original.getClass().getName().contains("WindowsIconFactory")) {
+        String className = original.getClass().getName();
+        if (className.contains("WindowsIconFactory")) {
+
+            // Deep inside some sun-private UI implementation code, there's some sanity checks
+            // calling "instanceof VistaMenuItemCheckIcon" to ensure the Vista icons are
+            // "compatible" (whatever that means). If we change them, they're not "compatible",
+            // and the menu layout falls back to the default (like Metal) and looks weird.
+            //
+            // Not much we can do. :-( Still, if the user's scaling is between +/- 25% of the
+            // primary monitor then this will probably look all right. This is bound to cover
+            // most typical scenarios. If not, the size of Check and Radio buttons in menus will be
+            // very mismatched.
+            if (className.endsWith("VistaMenuItemCheckIcon")) {
+                return original;
+            }
             return newLoopBreakingScaledIcon(key, original, alternateScaleFactor);
         }
-
 
         // These icons appear to NOT include Windows-default scaling applied. Just scale using
         // the desired scale-factor directly.
