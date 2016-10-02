@@ -49,6 +49,13 @@ public class UiScaling {
     private static final List<ChangeListener> s_changeListeners = new ArrayList<ChangeListener>();
 
     /**
+     * @return the currently-set scaling as a factor (or is that multiplicand?) Anyway 2.5f == 250%
+     */
+    public static float getScalingFactor() {
+        return getScaling() / 100f;
+    }
+
+    /**
      * @return the currently-set scaling in percentage points.
      */
     public static int getScaling() {
@@ -106,7 +113,7 @@ public class UiScaling {
     }
 
     public static float scale(float f) {
-        return f * getScaling() / 100f;
+        return f * getScalingFactor();
     }
 
     public static Dimension scale(Dimension dim) {
@@ -114,6 +121,6 @@ public class UiScaling {
     }
 
     public static Font scale(Font font) {
-        return font.deriveFont(font.getSize2D() * getScaling() / 100f);
+        return font.deriveFont(font.getSize2D() * getScalingFactor());
     }
 }
