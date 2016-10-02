@@ -91,9 +91,7 @@ public class WindowsTweaker extends BasicTweaker {
     public Font modifyFont(Object key, Font original) {
         String keyString = key.toString();
         Font font = maybeSubstituteFont(keyString, original);
-        if (keyString.endsWith(".acceleratorFont") && !keyString.startsWith("MenuItem.") ||
-                keyString.equals("ColorChooser.font") ||
-                keyString.equals("TextArea.font")) {
+        if (isFontUnscaled(keyString)) {
             return super.modifyFont(key, font);
         }
         return (alternateScaleFactor == 1f) ? font :
@@ -105,6 +103,12 @@ public class WindowsTweaker extends BasicTweaker {
             return optionPaneFont;
         }
         return original;
+    }
+
+    private boolean isFontUnscaled(String keyString) {
+        return keyString.endsWith(".acceleratorFont") && !keyString.startsWith("MenuItem.") ||
+                keyString.equals("ColorChooser.font") ||
+                keyString.equals("TextArea.font");
     }
 
     @Override
