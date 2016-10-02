@@ -89,7 +89,7 @@ public class UiDefaultsScaler {
         return new BasicTweaker(dpiScaling);
     }
 
-    private void modifyDefaults(Tweaker delegate) {
+    private void modifyDefaults(Tweaker tweaker) {
         UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 
         // Used to replicate aliased-references to the same object wherever the original did this.
@@ -100,7 +100,7 @@ public class UiDefaultsScaler {
             if (identityMap.keySet().contains(original)) {
                 continue;
             }
-            Object newValue = modifyValueUsingDelegate(delegate, key, original);
+            Object newValue = modifyValueUsingDelegate(tweaker, key, original);
             if (newValue != null && newValue != original) {
                 defaults.put(key, newValue);
             }
@@ -111,18 +111,18 @@ public class UiDefaultsScaler {
      * @return {@code null} if the value was not of an type known to possibly need modification,
      *         {@code value} if delegated but no modification is made, otherwise a modified value.
      */
-    private Object modifyValueUsingDelegate(Tweaker delegate, Object key, Object original) {
+    private Object modifyValueUsingDelegate(Tweaker tweaker, Object key, Object original) {
         if (original instanceof Font) {
-            return delegate.modifyFont(key, (Font) original);
+            return tweaker.modifyFont(key, (Font) original);
         }
         if (original instanceof Icon) {
-            return delegate.modifyIcon(key, (Icon) original);
+            return tweaker.modifyIcon(key, (Icon) original);
         }
         if (original instanceof Dimension) {
-            return delegate.modifyDimension(key, (Dimension) original);
+            return tweaker.modifyDimension(key, (Dimension) original);
         }
         if (original instanceof Integer) {
-            return delegate.modifyInteger(key, (Integer) original);
+            return tweaker.modifyInteger(key, (Integer) original);
         }
         return null;
     }
