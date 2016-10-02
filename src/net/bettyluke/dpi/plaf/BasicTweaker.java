@@ -75,7 +75,7 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public Font modifyFont(Object key, Font original) {
-        if (scaleFactor == 1f) {
+        if (isUnscaled(scaleFactor)) {
             return original;
         }
 
@@ -98,7 +98,7 @@ public class BasicTweaker implements Tweaker {
     }
 
     protected static Icon newScaledIconUIResource(Icon original, float scale) {
-        if (scale == 1f && original instanceof UIResource) {
+        if (isUnscaled(scale) && original instanceof UIResource) {
             return original;
         }
         return new ScaledIconUIResource(new ScaledIcon(original, scale));
@@ -106,7 +106,7 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public Dimension modifyDimension(Object key, Dimension original) {
-        if (scaleFactor == 1f || !(original instanceof DimensionUIResource)) {
+        if (isUnscaled(scaleFactor) || !(original instanceof DimensionUIResource)) {
             return original;
         }
         int width = Math.round(original.width * scaleFactor);
@@ -120,7 +120,7 @@ public class BasicTweaker implements Tweaker {
     }
 
     protected static Integer scaleIntegerIfMetric(Object key, Integer original, float scale) {
-        if (scale == 1f || !endsWithOneOf(lower(key), getLowerSuffixesForScaledIntegers())) {
+        if (isUnscaled(scale) || !endsWithOneOf(lower(key), getLowerSuffixesForScaledIntegers())) {
             return original;
         }
         return Math.round(original * scale);
@@ -143,6 +143,10 @@ public class BasicTweaker implements Tweaker {
         return LOWER_SUFFIXES_FOR_SCALED_INTEGERS;
     }
 
+    protected static boolean isUnscaled(float scale) {
+        return Math.abs(scale - 1f) < 0.001f;
+    }
+
     @Override
     public void finalTweaks() {
         if (doExtraTweaks) {
@@ -160,7 +164,7 @@ public class BasicTweaker implements Tweaker {
         }
     }
 
-    public static Color blendColour(Color a, Color b, int percentA) {
+    private static Color blendColour(Color a, Color b, int percentA) {
         int percentB = 100 - percentA;
         return new Color(
                 (a.getRed() * percentA + b.getRed() * percentB) / 100,

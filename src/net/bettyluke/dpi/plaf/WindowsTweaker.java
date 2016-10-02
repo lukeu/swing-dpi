@@ -94,7 +94,7 @@ public class WindowsTweaker extends BasicTweaker {
         if (isFontUnscaled(keyString)) {
             return super.modifyFont(key, font);
         }
-        return (alternateScaleFactor == 1f) ? font :
+        return isUnscaled(alternateScaleFactor) ? font :
                 newScaledFontUIResource(font, alternateScaleFactor);
     }
 
@@ -180,7 +180,7 @@ public class WindowsTweaker extends BasicTweaker {
     }
 
     protected static Icon newLoopBreakingScaledIcon(Object key, Icon original, float scale) {
-        if (scale == 1f && original instanceof IconUIResource) {
+        if (isUnscaled(scale) && original instanceof IconUIResource) {
             return original;
         }
         return new ScaledIconUIResource(new LoopBreakingScaledIcon(key, original, scale));
