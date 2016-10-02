@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -38,10 +39,9 @@ public class UiScaling {
 
     /**
      * Scaling in integer percentage points; so 100 results in the 'standard' setting of 96 DPI.
-     * Threading: it is assumed that all access will occur from the EDT (in which case 'volatile'
-     * is somewhat superfluous and defensive).
      */
-    private static volatile int s_scalingPercentage = DpiUtils.getClosestStandardScaling();
+    private static final AtomicInteger s_scalingPercentage = 
+            new AtomicInteger(DpiUtils.getClosestStandardScaling());
 
     /**
      * Threading: all access must synchronize on this final member
@@ -52,16 +52,14 @@ public class UiScaling {
      * @return the currently-set scaling in percentage points.
      */
     public static int getScaling() {
-        assert SwingUtilities.isEventDispatchThread();
-
-        return s_scalingPercentage;
+        return s_scalingPercentage.get();
     }
 
     public static void setScaling(int scalingInPercent) {
         assert SwingUtilities.isEventDispatchThread();
 
-        if (s_scalingPercentage != scalingInPercent) {
-            s_scalingPercentage = scalingInPercent;
+        int old = s_scalingPercentage.getAndSet(scalingInPercent);
+        if (old != scalingInPercent) {
             notifyListeners();
         }
     }
@@ -104,19 +102,18 @@ public class UiScaling {
     }
 
     public static int scale(int i) {
-        return Math.round((i * s_scalingPercentage) / 100f);
+        return Math.round((i * getScaling()) / 100f);
     }
 
     public static float scale(float f) {
-        return f * s_scalingPercentage / 100f;
+        return f * getScaling() / 100f;
     }
 
     public static Dimension scale(Dimension dim) {
-        return (s_scalingPercentage == 100) ? dim :
-                new Dimension(scale(dim.width), scale(dim.height));
+        return (getScaling() == 100) ? dim : new Dimension(scale(dim.width), scale(dim.height));
     }
 
     public static Font scale(Font font) {
-        return font.deriveFont(font.getSize2D() * s_scalingPercentage / 100f);
+        return font.deriveFont(font.getSize2D() * getScaling() / 100f);
     }
 }
