@@ -158,6 +158,6 @@ public class ScaledIcon implements Icon {
 
     @Override
     public int getIconHeight() {
-        return Math.round(delegate.getIconWidth() * scaleFactor);
+        return Math.round(delegate.getIconHeight() * scaleFactor);
     }
 }
