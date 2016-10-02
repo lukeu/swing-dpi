@@ -20,6 +20,7 @@
 
 package net.bettyluke.dpi.plaf;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -146,6 +147,24 @@ public class BasicTweaker implements Tweaker {
     public void finalTweaks() {
         if (doExtraTweaks) {
             uiDefaults.put("Tree.paintLines", false);
+
+            fadeColor("Table.gridColor", "Table.background");
         }
+    }
+
+    private void fadeColor(String toFade, String background) {
+        Color main = uiDefaults.getColor(toFade);
+        Color bg = uiDefaults.getColor(background);
+        if (main != null && bg != null) {
+            uiDefaults.put(toFade, blendColour(main, bg, 25));
+        }
+    }
+
+    public static Color blendColour(Color a, Color b, int percentA) {
+        int percentB = 100 - percentA;
+        return new Color(
+                (a.getRed() * percentA + b.getRed() * percentB) / 100,
+                (a.getGreen() * percentA + b.getGreen() * percentB) / 100,
+                (a.getBlue() * percentA + b.getBlue() * percentB) / 100);
     }
 }
