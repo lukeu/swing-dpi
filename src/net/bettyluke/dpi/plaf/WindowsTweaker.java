@@ -25,7 +25,7 @@ import java.awt.Font;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
-import javax.swing.plaf.IconUIResource;
+import javax.swing.plaf.UIResource;
 
 import net.bettyluke.dpi.DpiUtils;
 import net.bettyluke.dpi.util.LoopBreakingScaledIcon;
@@ -160,7 +160,7 @@ public class WindowsTweaker extends BasicTweaker {
         // the desired scale-factor directly.
         //
         // Examples: FileChooser.newFolderIcon, Tree.openIcon
-        if (original instanceof IconUIResource || original instanceof ImageIcon) {
+        if (original instanceof UIResource || original instanceof ImageIcon) {
             return super.modifyIcon(key, original);
         }
 
@@ -180,7 +180,7 @@ public class WindowsTweaker extends BasicTweaker {
     }
 
     protected static Icon newLoopBreakingScaledIcon(Object key, Icon original, float scale) {
-        if (isUnscaled(scale) && original instanceof IconUIResource) {
+        if (isUnscaled(scale) && original instanceof UIResource) {
             return original;
         }
         return new ScaledIconUIResource(new LoopBreakingScaledIcon(key, original, scale));

@@ -79,7 +79,7 @@ public class BasicTweaker implements Tweaker {
             return original;
         }
 
-        if (original instanceof FontUIResource) {
+        if (original instanceof UIResource) {
             return newScaledFontUIResource(original, scaleFactor);
         }
 
@@ -106,7 +106,7 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public Dimension modifyDimension(Object key, Dimension original) {
-        if (isUnscaled(scaleFactor) || !(original instanceof DimensionUIResource)) {
+        if (isUnscaled(scaleFactor) || !(original instanceof UIResource)) {
             return original;
         }
         int width = Math.round(original.width * scaleFactor);
