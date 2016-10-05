@@ -87,8 +87,8 @@ public class BasicTweaker implements Tweaker {
     }
 
     protected static FontUIResource newScaledFontUIResource(Font original, float scale) {
-        int newSize = Math.round(original.getSize() * scale);
-        return new ScaledFontUIResource(original.getName(), original.getStyle(), newSize);
+        float newSize = Math.round(original.getSize() * scale);
+        return new ScaledFontUIResource(original.deriveFont(newSize));
     }
 
     @Override

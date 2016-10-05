@@ -20,6 +20,8 @@
 
 package net.bettyluke.dpi.plaf;
 
+import java.awt.Font;
+
 import javax.swing.plaf.FontUIResource;
 
 /**
@@ -29,5 +31,9 @@ import javax.swing.plaf.FontUIResource;
 public class ScaledFontUIResource extends FontUIResource {
     public ScaledFontUIResource(String name, int style, int newSize) {
         super(name, style, newSize);
+    }
+
+    public ScaledFontUIResource(Font font) {
+        super(font);
     }
 }
