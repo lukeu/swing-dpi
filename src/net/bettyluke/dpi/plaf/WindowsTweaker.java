@@ -67,6 +67,8 @@ public class WindowsTweaker extends BasicTweaker {
             "CheckBoxMenuItem.", "RadioButtonMenuItem."
     };
 
+    private static final String BUTTON_DASHED_RECT_PREFIX = "Button.dashedRectGap";
+
     public WindowsTweaker(float scaleFactor, boolean classic) {
 
         // Windows already scales fonts, scrollbar sizes (etc) according to the system DPI settings.
@@ -85,6 +87,14 @@ public class WindowsTweaker extends BasicTweaker {
     @Override
     public void finalTweaks() {
         super.finalTweaks();
+        try {
+            int x = (Integer) UIManager.get(BUTTON_DASHED_RECT_PREFIX + "X");
+            int y = (Integer) UIManager.get(BUTTON_DASHED_RECT_PREFIX + "Y");
+            UIManager.put(BUTTON_DASHED_RECT_PREFIX + "Width", x * 2);
+            UIManager.put(BUTTON_DASHED_RECT_PREFIX + "Height", y * 2);
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -113,6 +123,9 @@ public class WindowsTweaker extends BasicTweaker {
 
     @Override
     public Integer modifyInteger(Object key, Integer original) {
+        if (key.toString().startsWith(BUTTON_DASHED_RECT_PREFIX)) {
+            return (int) (original * scaleFactor); // Intentionally floor
+        }
         for (String prefix : PRESCALED_INTEGER_PREFIXES) {
             if (String.valueOf(key).startsWith(prefix)) {
                 return scaleIntegerIfMetric(key, original, alternateScaleFactor);
