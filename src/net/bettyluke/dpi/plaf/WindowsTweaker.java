@@ -124,7 +124,10 @@ public class WindowsTweaker extends BasicTweaker {
     @Override
     public Integer modifyInteger(Object key, Integer original) {
         if (key.toString().startsWith(BUTTON_DASHED_RECT_PREFIX)) {
-            return (int) (original * scaleFactor); // Intentionally floor
+
+            // Reduce how far into the button the keyboard selection moves. Otherwise it starts
+            // crossing the text at higher scaling levels.
+            return Math.round(original * (1f + scaleFactor) * 0.5f);
         }
         for (String prefix : PRESCALED_INTEGER_PREFIXES) {
             if (String.valueOf(key).startsWith(prefix)) {
