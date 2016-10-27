@@ -24,6 +24,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.UIDefaults;
@@ -48,6 +50,10 @@ public class BasicTweaker implements Tweaker {
     private static final String[] LOWER_SUFFIXES_FOR_SCALED_INTEGERS = new String[] {
         "width", "height", "indent", "size", "gap"
     };
+
+    private static final List<String> INSET_SCALING_BLACKLIST = Arrays.asList(
+            "Spinner.arrowButtonInsets"
+    );
 
     protected final float scaleFactor;
 
@@ -108,10 +114,16 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public Dimension modifyDimension(Object key, Dimension original) {
-        if (isUnscaled(scaleFactor) || !(original instanceof UIResource)) {
+        if (isUnscaled(scaleFactor)) {
             return original;
         }
         int width = Math.round(original.width * scaleFactor);
+        if ("Spinner.arrowButtonSize".equals(key)) {
+            return new Dimension(width, original.height);
+        }
+        if (!(original instanceof UIResource)) {
+            return original;
+        }
         int height = Math.round(original.height * scaleFactor);
         return new DimensionUIResource(width, height);
     }
@@ -130,7 +142,8 @@ public class BasicTweaker implements Tweaker {
 
     @Override
     public Insets modifyInsets(Object key, Insets original) {
-        if (isUnscaled(scaleFactor) || !(original instanceof UIResource)) {
+        if (isUnscaled(scaleFactor) || !(original instanceof UIResource) ||
+                INSET_SCALING_BLACKLIST.contains(key)) {
             return original;
         }
         Insets insets = original;
