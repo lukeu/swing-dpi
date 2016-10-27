@@ -26,13 +26,6 @@ public class DpiUtils {
 
     public static final int[] STANDARD_SCALINGS = new int[] { 100, 125, 150, 200, 250, 300 };
 
-    // This looks to never change (on Windows it requires logging out, plus there is no event to
-    // monitor). It invokes a native call, and we don't know how expensive that call might be
-    // on all platforms. This might be read in performance-critical areas, like painting.
-    // Hence, we just cache this value.
-    private static final int SCREEN_RESOLUTION_IN_DPI =
-            Toolkit.getDefaultToolkit().getScreenResolution();
-
     /**
      * A scaling level of 100% represents 96 DPI on a 'typical' (2000-2010 era) monitor. (This value
      * is assumed by Windows. As far as screens go, DPI doesn't really represent inches at all.)
@@ -55,9 +48,13 @@ public class DpiUtils {
      * So this value seems designed for "System scale factor" apps, as described here:
      *
      *   https://blogs.technet.microsoft.com/askcore/2015/12/08/display-scaling-in-windows-10/
+     *
+     * As this method entails a native OS call, I don't know how expensive that call might be.
+     * Probably best to avoid calling this in performance-critical areas, like painting.
      */
     public static int getCurrentScaling() {
-        return Math.round((SCREEN_RESOLUTION_IN_DPI * 100f) / UNSCALED_DPI);
+        int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+        return Math.round((dpi * 100f) / UNSCALED_DPI);
     }
 
     private static int closest(int of, int[] in) {
