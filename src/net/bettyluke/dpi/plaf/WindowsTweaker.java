@@ -74,7 +74,7 @@ public class WindowsTweaker extends BasicTweaker {
         // Windows already scales fonts, scrollbar sizes (etc) according to the system DPI settings.
         // (the same things which hopefully the heuristics in BasicTweaker manages to locate).
         super(scaleFactor);
-        alternateScaleFactor = 100f * scaleFactor / DpiUtils.getCurrentScaling();
+        alternateScaleFactor = 100f * scaleFactor / DpiUtils.getSystemScaling();
         optionPaneFont = UIManager.getFont("OptionPane.font");
         windowsClassic = classic;
     }

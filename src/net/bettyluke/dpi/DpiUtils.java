@@ -33,7 +33,7 @@ public class DpiUtils {
     private static final int UNSCALED_DPI = 96;
 
     public static int getClosestStandardScaling() {
-        return closest(getCurrentScaling(), STANDARD_SCALINGS);
+        return closest(getSystemScaling(), STANDARD_SCALINGS);
     }
 
     public static int getClosestStandardScaling(int scaling) {
@@ -52,7 +52,7 @@ public class DpiUtils {
      * As this method entails a native OS call, I don't know how expensive that call might be.
      * Probably best to avoid calling this in performance-critical areas, like painting.
      */
-    public static int getCurrentScaling() {
+    public static int getSystemScaling() {
         int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
         return Math.round((dpi * 100f) / UNSCALED_DPI);
     }
