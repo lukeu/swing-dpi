@@ -22,6 +22,7 @@ package net.bettyluke.dpi.plaf;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.Icon;
 
@@ -40,6 +41,8 @@ public interface Tweaker {
     Dimension modifyDimension(Object key, Dimension original);
 
     Integer modifyInteger(Object key, Integer original);
+
+    Insets modifyInsets(Object key, Insets original);
 
     void finalTweaks();
 }

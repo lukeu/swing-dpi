@@ -22,6 +22,7 @@ package net.bettyluke.dpi;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 
@@ -123,6 +124,9 @@ public class UiDefaultsScaler {
         }
         if (original instanceof Integer) {
             return tweaker.modifyInteger(key, (Integer) original);
+        }
+        if (original instanceof Insets) {
+            return tweaker.modifyInsets(key, (Insets) original);
         }
         return null;
     }

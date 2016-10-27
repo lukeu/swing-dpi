@@ -23,12 +23,14 @@ package net.bettyluke.dpi.plaf;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.Icon;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
 import net.bettyluke.dpi.util.ScaledIcon;
@@ -124,6 +126,19 @@ public class BasicTweaker implements Tweaker {
             return original;
         }
         return Math.round(original * scale);
+    }
+
+    @Override
+    public Insets modifyInsets(Object key, Insets original) {
+        if (isUnscaled(scaleFactor) || !(original instanceof UIResource)) {
+            return original;
+        }
+        Insets insets = original;
+        return new InsetsUIResource(
+                Math.round(scaleFactor * insets.top),
+                Math.round(scaleFactor * insets.left),
+                Math.round(scaleFactor * insets.bottom),
+                Math.round(scaleFactor * insets.right));
     }
 
     private static boolean endsWithOneOf(String text, String[] suffixes) {
