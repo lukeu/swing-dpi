@@ -37,6 +37,9 @@ public class WindowsTweaker extends BasicTweaker {
      * provide them. Therefore we need to 'undo' Window's scaling before applying our desired
      * scale-factor. This value holds the resulting scale-factor to apply to these UI elements.
      */
+    // NB Some issues requiring this may now be fixed Since Java 8 u 102 in:
+    //   - JDK-8076545 "Text size is twice bigger under Windows L&F on Win 8.1 with HiDPI display"
+    // TODO: Upgrade and retest on different JDK versions
     protected final float alternateScaleFactor;
 
     protected final Font optionPaneFont;
@@ -176,7 +179,8 @@ public class WindowsTweaker extends BasicTweaker {
         // the desired scale-factor directly.
         //
         // Examples: FileChooser.newFolderIcon, Tree.openIcon
-        if (original instanceof UIResource || original instanceof ImageIcon) {
+        if ((original instanceof UIResource || original instanceof ImageIcon) &&
+                !className.contains("SkinIcon")) {
             return super.modifyIcon(key, original);
         }
 
