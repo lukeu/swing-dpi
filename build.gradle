@@ -1,13 +1,30 @@
 apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
+group = 'net.bettyluke'
 version = '0.6-SNAPSHOT'
 
 repositories {
+    mavenLocal()
     jcenter()
 }
 
 dependencies {
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
 }
