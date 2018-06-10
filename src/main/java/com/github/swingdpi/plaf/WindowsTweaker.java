@@ -18,7 +18,7 @@
  * Comments & collaboration are both welcome.
  */
 
-package net.bettyluke.dpi.plaf;
+package com.github.swingdpi.plaf;
 
 import java.awt.Font;
 
@@ -27,8 +27,8 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
-import net.bettyluke.dpi.DpiUtils;
-import net.bettyluke.dpi.util.LoopBreakingScaledIcon;
+import com.github.swingdpi.DpiUtils;
+import com.github.swingdpi.util.LoopBreakingScaledIcon;
 
 public class WindowsTweaker extends BasicTweaker {
 

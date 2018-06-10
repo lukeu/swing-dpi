@@ -18,7 +18,7 @@
  * Comments & collaboration are both welcome.
  */
 
-package net.bettyluke.dpi;
+package com.github.swingdpi;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -30,11 +30,11 @@ import javax.swing.Icon;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import net.bettyluke.dpi.plaf.BasicTweaker;
-import net.bettyluke.dpi.plaf.MetalTweaker;
-import net.bettyluke.dpi.plaf.NimbusTweaker;
-import net.bettyluke.dpi.plaf.Tweaker;
-import net.bettyluke.dpi.plaf.WindowsTweaker;
+import com.github.swingdpi.plaf.BasicTweaker;
+import com.github.swingdpi.plaf.MetalTweaker;
+import com.github.swingdpi.plaf.NimbusTweaker;
+import com.github.swingdpi.plaf.Tweaker;
+import com.github.swingdpi.plaf.WindowsTweaker;
 
 /**
  * Applies changes to Swing's {@code UIDefaults} to perform a best-effort default scaling for many

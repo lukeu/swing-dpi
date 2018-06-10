@@ -18,7 +18,7 @@
  * Comments & collaboration are both welcome.
  */
 
-package net.bettyluke.dpi.util;
+package com.github.swingdpi.util;
 
 import java.awt.Component;
 import java.awt.Graphics;

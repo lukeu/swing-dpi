@@ -18,17 +18,11 @@
  * Comments & collaboration are both welcome.
  */
 
-package net.bettyluke.dpi.plaf;
+package com.github.swingdpi.plaf;
 
-import javax.swing.Icon;
-import javax.swing.plaf.IconUIResource;
+public class MetalTweaker extends BasicTweaker {
 
-/**
- * Purely a 'tagging class' - so we can detect instances of this to validate that we never
- * scale an icon twice.
- */
-class ScaledIconUIResource extends IconUIResource {
-    public ScaledIconUIResource(Icon delegate) {
-        super(delegate);
+    public MetalTweaker(float scaleFactor) {
+        super(scaleFactor);
     }
 }

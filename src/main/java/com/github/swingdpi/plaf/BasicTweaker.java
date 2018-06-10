@@ -18,7 +18,7 @@
  * Comments & collaboration are both welcome.
  */
 
-package net.bettyluke.dpi.plaf;
+package com.github.swingdpi.plaf;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,7 +35,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
-import net.bettyluke.dpi.util.ScaledIcon;
+import com.github.swingdpi.util.ScaledIcon;
 
 
 /**

@@ -18,7 +18,7 @@
  * Comments & collaboration are both welcome.
  */
 
-package net.bettyluke.dpi.plaf;
+package com.github.swingdpi.plaf;
 
 import java.awt.Font;
 
