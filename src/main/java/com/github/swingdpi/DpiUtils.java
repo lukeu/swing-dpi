@@ -22,6 +22,8 @@ package com.github.swingdpi;
 
 import java.awt.Toolkit;
 
+import com.github.swingdpi.plaf.JavaVersion;
+
 public class DpiUtils {
 
     public static final int[] STANDARD_SCALINGS = new int[] { 100, 125, 150, 200, 250, 300 };
@@ -41,6 +43,23 @@ public class DpiUtils {
     }
 
     /**
+     * On JDK &gt;= 9 this simply returns 100, since Java 9 itself takes care of the DPI scaling
+     * (and adapts it accordingly between screens of different DPI. Yay!).
+     * Otherwise, returns {@link #getJavaIndependentScreenScaling()}
+     *
+     * Usually you want to call this method, to adjust for DPI scaling when Java doesn't handle it,
+     * and not adjust for DPI scaling when Java does.
+     *
+     * @return The Java-version-dependent system-scaling as an integer percentage
+     */
+    public static int getSystemScaling() {
+        if (JavaVersion.isDpiAware()) {
+            return 100;
+        }
+        return getJavaIndependentScreenScaling();
+    }
+
+    /**
      * Returns the default scaling level of the primary monitor at the point the user logged in.
      * Although per-monitor scaling can be changed dynamically in Windows 8.1 and 10, this
      * value will not change until the user logs out.
@@ -51,8 +70,10 @@ public class DpiUtils {
      *
      * As this method entails a native OS call, I don't know how expensive that call might be.
      * Probably best to avoid calling this in performance-critical areas, like painting.
+     *
+     * @return The Java-version-independent scaling of the PRIMARY screen as an integer percentage
      */
-    public static int getSystemScaling() {
+    public static int getJavaIndependentScreenScaling() {
         int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
         return Math.round((dpi * 100f) / UNSCALED_DPI);
     }

@@ -90,6 +90,9 @@ public class WindowsTweaker extends BasicTweaker {
     @Override
     public void finalTweaks() {
         super.finalTweaks();
+        if (JavaVersion.isDpiAware()) {
+            return;
+        }
         try {
             int x = (Integer) UIManager.get(BUTTON_DASHED_RECT_PREFIX + "X");
             int y = (Integer) UIManager.get(BUTTON_DASHED_RECT_PREFIX + "Y");
