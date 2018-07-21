@@ -20,13 +20,16 @@
 
 package com.github.swingdpi;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -108,6 +111,10 @@ public class UiScaling {
         }
     }
 
+    public static Dimension newDimension(int width, int height) {
+        return scale(new Dimension(width, height));
+    }
+
     public static int scale(int i) {
         return Math.round((i * getScaling()) / 100f);
     }
@@ -122,5 +129,19 @@ public class UiScaling {
 
     public static Font scale(Font font) {
         return font.deriveFont(font.getSize2D() * getScalingFactor());
+    }
+
+    public static Border createEmptyBorder(int top, int left, int bottom, int right) {
+        return BorderFactory.createEmptyBorder(
+                scale(top), scale(left), scale(bottom), scale(right));
+    }
+
+    public static Border createLineBorder(Color color, int thickness)  {
+        return BorderFactory.createLineBorder(color, scale(thickness));
+    }
+
+    public static Border createMatteBorder(int top, int left, int bottom, int right, Color color) {
+        return BorderFactory.createMatteBorder(
+                scale(top), scale(left), scale(bottom), scale(right), color);
     }
 }
