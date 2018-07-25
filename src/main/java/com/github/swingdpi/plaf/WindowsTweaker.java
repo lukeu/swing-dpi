@@ -21,6 +21,7 @@
 package com.github.swingdpi.plaf;
 
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -37,9 +38,6 @@ public class WindowsTweaker extends BasicTweaker {
      * provide them. Therefore we need to 'undo' Window's scaling before applying our desired
      * scale-factor. This value holds the resulting scale-factor to apply to these UI elements.
      */
-    // NB Some issues requiring this may now be fixed Since Java 8 u 102 in:
-    //   - JDK-8076545 "Text size is twice bigger under Windows L&F on Win 8.1 with HiDPI display"
-    // TODO: Upgrade and retest on different JDK versions
     protected final float alternateScaleFactor;
 
     protected final Font optionPaneFont;
@@ -85,6 +83,20 @@ public class WindowsTweaker extends BasicTweaker {
     @Override
     public void initialTweaks() {
         super.initialTweaks();
+
+        if (doExtraTweaks) {
+            // Java <= 8 uses 0, while Java >= 9 uses 2. This means that menus would jump 20% larger
+            // upon upgrading JDK. We standardise this using the middle value of 1, which also
+            // matches other native menus I found in Windows. I'm not sure why they went with 2.
+            // (Incidentally, this also makes MenuItems the same pixel height as Metal L&F.)
+            UIManager.put("MenuItem.margin", new Insets(1, 1, 1, 1));
+
+            // The Menus in a Menu-bar definitely do look better with more spacing between them,
+            // especially since the JDK 8 value of '0' doesn't scale as the font size is increased
+            // and the words look crammed together. Standardise on the Java 9+ values.
+            // (Again this happens to make Windows use the same value that Metal has always used.)
+            UIManager.put("Menu.margin", new Insets(2, 2, 2, 2));
+        }
     }
 
     @Override
