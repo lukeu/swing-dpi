@@ -41,7 +41,7 @@ import com.github.swingdpi.plaf.WindowsTweaker;
  * parts of the UI, according to a specified scaling percentage.
  * <p>
  * A few other tweaks are made at the same time, to adjust the UI metrics to reflect more modern
- * practices - like table & tree row sizing on all platforms and changing the Windows UI font to be
+ * practices, like table and tree row sizing on all platforms and changing the Windows UI font to be
  * more like Windows 7, less like Windows 95.
  * <p>
  * For example, see internal comments of JDK class {@code BasicTableUI#installDefaults}

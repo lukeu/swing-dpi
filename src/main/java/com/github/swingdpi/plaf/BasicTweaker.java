@@ -40,10 +40,10 @@ import com.github.swingdpi.util.ScaledIcon;
 
 /**
  * This is the default implementation of 'Tweaker'. It attempts to do some basic tweaks which
- * might be expected to be "typical" for generic / unknown L&Fs.
+ * might be expected to be "typical" for generic / unknown L&amp;Fs.
  *<p>
  * (You're in trouble if it is actually used as a concrete class however - there seems to be very
- * little consistency between any L&Fs especially when it comes to scaling!)
+ * little consistency between any L&amp;Fs especially when it comes to scaling!)
  */
 public class BasicTweaker implements Tweaker {
 

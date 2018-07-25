@@ -90,7 +90,7 @@ public class UiScaling {
     }
 
     /**
-     * Be notified when L&F or scaling-level has changed.
+     * Be notified when L&amp;F or scaling-level has changed.
      * <p>
      * As always when listening on static objects: take care to avoid memory leaks by removing
      * listeners again, as these may continue to hold references to otherwise shorter-lived objects.
