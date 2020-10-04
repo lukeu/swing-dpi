@@ -34,8 +34,9 @@ public class ScaledTable extends JTable {
         super(numRows, numColumns);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ScaledTable(Vector<?> rowData, Vector<?> columnNames) {
-        super(rowData, columnNames);
+        super((Vector<? extends Vector>) rowData, (Vector<?>) columnNames);
     }
 
     public ScaledTable(Object[][] rowData, Object[] columnNames) {

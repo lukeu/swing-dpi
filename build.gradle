@@ -4,8 +4,8 @@ plugins {
     id 'signing'
 }
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 group = 'com.github.lukeu'
 version = '0.6'
@@ -16,40 +16,6 @@ repositories {
 
 dependencies {
 }
-
-// ---=== | JDK 6 support | ===---
-
-// Reference:
-//  https://docs.gradle.org/3.0/release-notes.html#running-gradle-on-java-6-is-no-longer-supported
-
-assert hasProperty('java6Home') : "Set 'java6Home' in gradle.properties (maybe in GRADLE_USER_HOME)"
-def javaExecutablesPath = new File(java6Home, 'bin')
-def javaExecutables = [:].withDefault { execName ->
-    def executable = new File(javaExecutablesPath, execName)
-    if (!executable.exists()) {
-        executable = new File(javaExecutablesPath, execName + '.exe')
-    }
-    assert executable.exists() : "There is no ${execName}(.exe) in ${javaExecutablesPath}"
-    executable
-}
-tasks.withType(AbstractCompile) {
-    options.with {
-        fork = true
-        forkOptions.executable = javaExecutables.javac
-    }
-}
-tasks.withType(Javadoc) {
-    executable = javaExecutables.javadoc
-}
-tasks.withType(Test) {
-    executable = javaExecutables.java
-}
-tasks.withType(JavaExec) {
-    executable = javaExecutables.java
-}
-
-
-// ---=== | Publishing | ===---
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
