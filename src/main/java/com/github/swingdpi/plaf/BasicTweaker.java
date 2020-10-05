@@ -102,6 +102,12 @@ public class BasicTweaker implements Tweaker {
     @Override
     public Icon modifyIcon(Object key, Icon original) {
         float scale = scaleFactor;
+
+        // TODO: either honour 'scale' or be more explicit that support for Java 9 and up is not
+        // intended to scale system icons.
+        if (JavaVersion.isDpiAware()) {
+            return original;
+        }
         return newScaledIconUIResource(original, scale);
     }
 

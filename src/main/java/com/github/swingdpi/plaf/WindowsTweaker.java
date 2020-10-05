@@ -157,6 +157,9 @@ public class WindowsTweaker extends BasicTweaker {
 
     @Override
     public Icon modifyIcon(Object key, Icon original) {
+        if (JavaVersion.isDpiAware()) {
+            return super.modifyIcon(key, original);
+        }
 
         // InternalFrame icons appear to choose their size programatically. (Possibly based on the
         // title font size?) They should not be rescaled at all.
