@@ -35,6 +35,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
+import com.github.swingdpi.DpiUtils;
 import com.github.swingdpi.util.ScaledIcon;
 
 
@@ -103,9 +104,9 @@ public class BasicTweaker implements Tweaker {
     public Icon modifyIcon(Object key, Icon original) {
         float scale = scaleFactor;
 
-        // TODO: either honour 'scale' or be more explicit that support for Java 9 and up is not
-        // intended to scale system icons.
-        if (JavaVersion.isDpiAware()) {
+        // In per-monitor-DPI mode, we never perform any icon scaling over and above adapting to the
+        // monitor's scaling level. This ensures we don't mess with any dynamically-changing icons.
+        if (DpiUtils.isPerMonitorDpiActive()) {
             return original;
         }
         return newScaledIconUIResource(original, scale);

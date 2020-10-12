@@ -75,7 +75,9 @@ public class WindowsTweaker extends BasicTweaker {
         // Windows already scales fonts, scrollbar sizes (etc) according to the system DPI settings.
         // (the same things which hopefully the heuristics in BasicTweaker manages to locate).
         super(scaleFactor);
-        alternateScaleFactor = 100f * scaleFactor / DpiUtils.getSystemScaling();
+        alternateScaleFactor = DpiUtils.isPerMonitorDpiActive()
+                ? 100f * scaleFactor / DpiUtils.getSystemScaling()
+                : scaleFactor;
         optionPaneFont = UIManager.getFont("OptionPane.font");
         windowsClassic = classic;
     }
@@ -102,7 +104,7 @@ public class WindowsTweaker extends BasicTweaker {
     @Override
     public void finalTweaks() {
         super.finalTweaks();
-        if (JavaVersion.isDpiAware()) {
+        if (DpiUtils.isPerMonitorDpiActive()) {
             return;
         }
         try {
@@ -157,7 +159,9 @@ public class WindowsTweaker extends BasicTweaker {
 
     @Override
     public Icon modifyIcon(Object key, Icon original) {
-        if (JavaVersion.isDpiAware()) {
+
+        // When per-monitor DPI scaling is active, just stay out of Java's way with icons.
+        if (DpiUtils.isPerMonitorDpiActive()) {
             return super.modifyIcon(key, original);
         }
 

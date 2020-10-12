@@ -53,10 +53,15 @@ public class DpiUtils {
      * @return The Java-version-dependent system-scaling as an integer percentage
      */
     public static int getSystemScaling() {
-        if (JavaVersion.isDpiAware()) {
+        if (isPerMonitorDpiActive()) {
             return 100;
         }
         return getJavaIndependentScreenScaling();
+    }
+
+    public static boolean isPerMonitorDpiActive() {
+        return JavaVersion.isDpiAware() &&
+                !"false".equalsIgnoreCase(System.getProperty("sun.java2d.uiScale.enabled"));
     }
 
     /**
