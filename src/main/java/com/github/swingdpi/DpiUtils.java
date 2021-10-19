@@ -20,6 +20,7 @@
 
 package com.github.swingdpi;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 
 import com.github.swingdpi.plaf.JavaVersion;
@@ -79,6 +80,9 @@ public class DpiUtils {
      * @return The Java-version-independent scaling of the PRIMARY screen as an integer percentage
      */
     public static int getJavaIndependentScreenScaling() {
+        if (GraphicsEnvironment.isHeadless()) {
+            return 100;
+        }
         int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
         return Math.round((dpi * 100f) / UNSCALED_DPI);
     }
