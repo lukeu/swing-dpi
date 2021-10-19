@@ -8,7 +8,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group = 'com.github.lukeu'
-version = '0.9'
+version = '0.10'
 
 // Currently no dependencies other than the JDK
 repositories {
