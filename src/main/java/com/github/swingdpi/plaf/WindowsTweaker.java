@@ -21,11 +21,10 @@
 package com.github.swingdpi.plaf;
 
 import java.awt.Font;
-import java.awt.Insets;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.UIManager;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.UIResource;
 
 import com.github.swingdpi.DpiUtils;
@@ -78,7 +77,7 @@ public class WindowsTweaker extends BasicTweaker {
         alternateScaleFactor = DpiUtils.isPerMonitorDpiActive()
                 ? 100f * scaleFactor / DpiUtils.getSystemScaling()
                 : scaleFactor;
-        optionPaneFont = UIManager.getFont("OptionPane.font");
+        optionPaneFont = uiDefaults.getFont("OptionPane.font");
         windowsClassic = classic;
     }
 
@@ -91,13 +90,13 @@ public class WindowsTweaker extends BasicTweaker {
             // upon upgrading JDK. We standardise this using the middle value of 1, which also
             // matches other native menus I found in Windows. I'm not sure why they went with 2.
             // (Incidentally, this also makes MenuItems the same pixel height as Metal L&F.)
-            UIManager.put("MenuItem.margin", new Insets(1, 1, 1, 1));
+            uiDefaults.put("MenuItem.margin", new InsetsUIResource(1, 1, 1, 1));
 
             // The Menus in a Menu-bar definitely do look better with more spacing between them,
             // especially since the JDK 8 value of '0' doesn't scale as the font size is increased
             // and the words look crammed together. Standardise on the Java 9+ values.
             // (Again this happens to make Windows use the same value that Metal has always used.)
-            UIManager.put("Menu.margin", new Insets(2, 2, 2, 2));
+            uiDefaults.put("Menu.margin", new InsetsUIResource(2, 2, 2, 2));
         }
     }
 
@@ -108,10 +107,10 @@ public class WindowsTweaker extends BasicTweaker {
             return;
         }
         try {
-            int x = (Integer) UIManager.get(BUTTON_DASHED_RECT_PREFIX + "X");
-            int y = (Integer) UIManager.get(BUTTON_DASHED_RECT_PREFIX + "Y");
-            UIManager.put(BUTTON_DASHED_RECT_PREFIX + "Width", x * 2);
-            UIManager.put(BUTTON_DASHED_RECT_PREFIX + "Height", y * 2);
+            int x = (Integer) uiDefaults.get(BUTTON_DASHED_RECT_PREFIX + "X");
+            int y = (Integer) uiDefaults.get(BUTTON_DASHED_RECT_PREFIX + "Y");
+            uiDefaults.put(BUTTON_DASHED_RECT_PREFIX + "Width", x * 2);
+            uiDefaults.put(BUTTON_DASHED_RECT_PREFIX + "Height", y * 2);
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
